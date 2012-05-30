@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="https://raw.github.com/douglascrockford/JSON-js/master/json2.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var qs = ["I like to TDD", "I can stop here.", "Pairing is fun", ""]
+                var questions = []
+                function next() {
+                    $('#d').text(qs.shift());
+                }
+
+                function displayAnswers() {
+                    $('#q').text(JSON.stringify(questions))
+                }
+
+                $('body').keypress(function(event) {
+
+                       var yOrN = event.which == 121 ? "y" : "n"
+                       questions.push({q: $('#d').text(), a: yOrN})
+                       next()
+                       
+                       if( qs.length == 0 ) {
+                        displayAnswers()
+                        $('body').unbind('keypress')
+                       }
+                })
+
+                next()
+            });
+        </script>
+        <style>
+            html, body { width: 100px; height: 100px }
+            div {height: 100%; overflow: visible; width: 100% }
+        </style>
+    </head>
+    <body>
+        <p>Please type 'y' or 'n' to reply 'yes' or 'no'</p>
+        <div id="d"></div>
+        <div id="q"></div>
+    </body>
+</html>
