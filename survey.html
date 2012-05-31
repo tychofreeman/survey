@@ -39,7 +39,7 @@
                    "Pair programming is inefficient.",
                    "I don't like TDD.",
                    ""]
-                var questions = []
+                var questions = {}
                 function next() {
                     $('#d').text(qs.shift());
                 }
@@ -49,15 +49,16 @@
                 }
 
                 $('body').keypress(function(event) {
-
-                       var yOrN = event.which == 121 ? "y" : "n"
-                       questions.push({q: $('#d').text(), a: yOrN})
-                       next()
+                    var yOrN = event.which == 121 ? "y" : "n"
+                    var q = $('#d').text()
+                    questions[q] = yOrN
+                    next()
                        
-                       if( qs.length == 0 ) {
+                    if( qs.length == 0 ) {
                         displayAnswers()
                         $('body').unbind('keypress')
-                       }
+                        $.post("/add-result", {id: "{{.Path}}", questions: JSON.stringify(questions)})
+                    }
                 })
 
                 next()
